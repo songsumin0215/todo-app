@@ -246,13 +246,13 @@
       li.appendChild(due);
     }
 
-    var editBtn = el('button', 'icon-btn', '✎');
+    var editBtn = el('button', 'text-btn', '수정');
     editBtn.type = 'button';
     editBtn.setAttribute('aria-label', '수정: ' + todo.title);
     editBtn.addEventListener('click', function () { startEdit(todo.id); });
     li.appendChild(editBtn);
 
-    var delBtn = el('button', 'icon-btn', '🗑');
+    var delBtn = el('button', 'text-btn', '삭제');
     delBtn.type = 'button';
     delBtn.setAttribute('aria-label', '삭제: ' + todo.title);
     delBtn.addEventListener('click', function () { deleteTodo(todo.id); });

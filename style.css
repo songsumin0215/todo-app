@@ -1,61 +1,72 @@
-/* Apple 디자인 시스템 (docs/DESIGN-apple.md) 적용
-   - 단일 인터랙션 색: Action Blue
-   - 카드·버튼에 그림자 없음, 헤어라인 경계만 사용
-   - 알약(pill) 버튼/입력, 눌림 상태는 scale(0.95)
-   - 8/12/17/24/32/48 간격 토큰 */
+/* SASE 디자인 시스템 (docs/DESIGN-sase.md) 적용
+   - SASE Red = 브랜드/주요 액션, Warm Orange = 보조 강조, Pink Red = 포인트
+   - 흰 카드 + 밝은 회색 배경, 그림자·그라디언트 없음
+   - 8pt 간격, 라운드 스케일 4/8/12/16/999
+   - 아래 "derived" 표시 값은 디자인 문서에 없는 구현용 파생 값 (문서 §2.2, §11 참고) */
 
 :root {
-  /* colors */
-  --primary: #0066cc;
-  --primary-focus: #0071e3;
-  --link: #0066cc;
-  --on-primary: #ffffff;
-  --ink: #1d1d1f;
-  --ink-muted-80: #333333;
-  --ink-muted-48: #7a7a7a;
-  --canvas: #ffffff;
-  --parchment: #f5f5f7;
-  --hairline: #e0e0e0;
-  --chip: #d2d2d7;
+  /* brand */
+  --primary: #E3182F;
+  --secondary: #F59E0B;
+  --accent: #FF6B81;
 
-  /* 기능 색상 (우선순위·지연 표시용; 인터랙션 색과는 별개) */
-  --high: #ff3b30;
-  --medium: #ff9f0a;
-  --low: #34c759;
-  --overdue: #d70015;
+  /* neutral */
+  --ink: #111827;
+  --text-normal: #374151;
+  --text-muted: #6B7280;
+  --border: #D1D5DB;
+  --surface: #E5E7EB;
+  --background: #F3F4F6;
+  --white: #FFFFFF;
 
-  /* spacing */
-  --xxs: 4px;
-  --xs: 8px;
-  --sm: 12px;
-  --md: 17px;
-  --lg: 24px;
-  --xl: 32px;
-  --xxl: 48px;
+  /* 역할별 (라이트) */
+  --page-bg: var(--background);
+  --card-bg: var(--white);
+  --card-border: var(--surface);
+  --text: var(--ink);
+  --text-soft: var(--text-normal);
+  --brand-text: var(--primary);                 /* 흰 배경 위 빨간 글자/테두리 */
+  --primary-pressed: #C21227;                   /* derived: primary 눌림 */
+  --primary-tint: rgba(227, 24, 47, 0.08);      /* derived: 선택 칩 옅은 틴트 */
+  --disabled-bg: var(--surface);
+
+  /* 우선순위 점 / 상태 */
+  --p-high: var(--primary);
+  --p-medium: var(--secondary);
+  --p-low: #16A34A;                             /* success (문서: 충분한 대비의 초록) */
+
+  /* spacing (8pt) */
+  --s1: 8px;
+  --s2: 16px;
+  --s3: 24px;
+  --s4: 32px;
+  --s5: 40px;
 
   /* radius */
-  --r-sm: 8px;
-  --r-lg: 18px;
-  --r-pill: 9999px;
+  --r-sm: 4px;
+  --r-md: 8px;
+  --r-lg: 12px;
+  --r-xl: 16px;
+  --r-full: 999px;
 
-  --font-display: "SF Pro Display", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
-  --font-text: "SF Pro Text", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+  --font: Pretendard, "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif;
 }
 
+/* 다크 모드: 문서에 규정이 없어 파생 (배경 ink, 카드 한 단계 밝게, 글자는 흰색 계열) */
 @media (prefers-color-scheme: dark) {
   :root {
-    --link: #2997ff;
-    --ink: #ffffff;
-    --ink-muted-80: #cccccc;
-    --ink-muted-48: #9a9a9f;
-    --canvas: #272729;     /* surface-tile-1 */
-    --parchment: #000000;  /* surface-black */
-    --hairline: rgba(255, 255, 255, 0.14);
-    --chip: rgba(210, 210, 215, 0.24);
-    --high: #ff453a;
-    --medium: #ff9f0a;
-    --low: #30d158;
-    --overdue: #ff6961;
+    --page-bg: var(--ink);
+    --card-bg: #1F2937;                          /* derived */
+    --card-border: var(--text-normal);
+    --text: #F3F4F6;
+    --text-soft: #D1D5DB;                        /* 라이트의 border 값과 동일 */
+    --text-muted: #9CA3AF;                       /* derived */
+    --border: #4B5563;                           /* derived */
+    --brand-text: var(--accent);                 /* 어두운 배경에서는 Pink Red로 대비 확보 */
+    --primary-tint: rgba(255, 107, 129, 0.16);   /* derived */
+    --disabled-bg: #374151;
+    --p-high: var(--accent);
+    --p-low: #4ADE80;                            /* derived */
   }
 }
 
@@ -63,114 +74,177 @@
 
 body {
   margin: 0;
-  background: var(--parchment);
-  color: var(--ink);
-  font-family: var(--font-text);
-  font-size: 17px;
+  background: var(--page-bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 16px;
   font-weight: 400;
-  line-height: 1.47;
-  letter-spacing: -0.374px;
-  -webkit-font-smoothing: antialiased;
+  line-height: 1.5;
 }
 
 .app {
-  max-width: 680px;
+  max-width: 720px;
   margin: 0 auto;
-  padding: var(--xxl) var(--lg) var(--xxl);
+  padding: var(--s4) var(--s3) var(--s5);
 }
 
-/* ---------- 헤드라인 (display-lg) ---------- */
+/* ---------- 헤더: 로고 + display 제목 ---------- */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  margin-bottom: var(--s3);
+}
+.logo {
+  display: block;
+  width: 112px;
+  height: auto;          /* 원본 비율 유지 */
+  flex: none;
+  border-radius: var(--r-lg);
+}
 h1 {
-  font-family: var(--font-display);
+  margin: 0;
   font-size: 40px;
-  font-weight: 600;
-  line-height: 1.1;
-  letter-spacing: 0;
-  margin: 0 0 var(--lg);
+  font-weight: 700;
+  line-height: 1.15;
 }
 
 /* ---------- 공통 컨트롤 ---------- */
 input, select, button {
   font: inherit;
-  letter-spacing: inherit;
-  color: var(--ink);
+  color: inherit;
 }
 
 input[type="text"],
 input[type="search"],
 input[type="date"],
 select {
+  width: 100%;
   height: 44px;
-  padding: 0 20px;
-  background: var(--canvas);
-  border: 1px solid var(--hairline);
-  border-radius: var(--r-pill);
+  padding: 0 var(--s2);
+  background: var(--card-bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
 }
 
-input::placeholder { color: var(--ink-muted-48); }
+input::placeholder { color: var(--text-muted); }
 
-button { cursor: pointer; }
-button:active:not(:disabled) { transform: scale(0.95); }
-button:disabled { color: var(--ink-muted-48); cursor: default; }
-
-:focus-visible {
-  outline: 2px solid var(--primary-focus);
+/* 포커스: 빨간 테두리 + 링 (색만으로 구분하지 않음) */
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--brand-text);
+  outline-offset: 1px;
+  border-color: var(--brand-text);
+}
+button:focus-visible,
+input[type="checkbox"]:focus-visible {
+  outline: 3px solid var(--brand-text);
   outline-offset: 2px;
 }
 
 input[type="checkbox"] { accent-color: var(--primary); }
 
-/* button-primary */
-button.primary {
+button { cursor: pointer; }
+button:disabled { cursor: default; }
+
+@media (prefers-reduced-motion: no-preference) {
+  button { transition: background-color 0.12s, transform 0.08s; }
+}
+button:active:not(:disabled) { transform: scale(0.97); }
+
+/* button.primary */
+.btn-primary {
   height: 44px;
-  padding: 0 22px;
+  padding: 0 var(--s3);
   background: var(--primary);
-  color: var(--on-primary);
+  color: var(--white);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.2;
   border: 0;
-  border-radius: var(--r-pill);
+  border-radius: var(--r-lg);
+}
+.btn-primary:active { background: var(--primary-pressed); }
+
+/* button.outlined */
+.btn-outlined {
+  height: 44px;
+  padding: 0 var(--s3);
+  background: var(--card-bg);
+  color: var(--brand-text);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
+  border: 1px solid var(--brand-text);
+  border-radius: var(--r-lg);
+}
+.btn-outlined:disabled {
+  background: var(--disabled-bg);
+  color: var(--text-muted);
+  border-color: var(--border);
 }
 
-/* ---------- 추가 폼 (store-utility-card) ---------- */
+/* ---------- 추가 폼 (card.information) ---------- */
 .add-form {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--xs);
-  padding: var(--lg);
-  margin-bottom: var(--lg);
-  background: var(--canvas);
-  border: 1px solid var(--hairline);
-  border-radius: var(--r-lg);
+  align-items: flex-end;
+  gap: var(--s2);
+  padding: var(--s3);
+  margin-bottom: var(--s3);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--r-xl);
 }
-.title-input { flex: 1 1 100%; }
-#priority-input { flex: 1 1 0; min-width: 0; }
-#due-input { flex: 1.4 1 0; min-width: 0; }
+.field { display: flex; flex-direction: column; gap: 4px; flex: 1 1 120px; min-width: 0; }
+.field-title { flex: 1 1 100%; }
+.field-due { flex-basis: 160px; }
+
+/* typography.label */
+label {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--text-soft);
+}
 
 /* ---------- 도구: 검색 + 필터 ---------- */
 .tools {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--sm);
+  gap: var(--s2);
   align-items: center;
-  margin-bottom: var(--md);
+  margin-bottom: var(--s2);
 }
-#search-input { flex: 1 1 180px; min-width: 0; }
+#search-input {
+  flex: 1 1 200px;
+  padding-left: 40px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2' stroke-linecap='round'><circle cx='11' cy='11' r='7'/><path d='M20 20l-3.5-3.5'/></svg>");
+  background-repeat: no-repeat;
+  background-position: 14px center;
+}
 
-.filters { display: flex; gap: var(--xs); }
+.filters { display: flex; gap: var(--s1); }
 
-/* configurator-option-chip */
+/* filter chips */
 .filters button {
   height: 44px;
-  padding: 0 16px;
+  padding: 0 var(--s2);
   font-size: 14px;
-  letter-spacing: -0.224px;
-  background: var(--canvas);
-  border: 1px solid var(--hairline);
-  border-radius: var(--r-pill);
+  font-weight: 500;
+  line-height: 1.4;
+  background: var(--card-bg);
+  color: var(--text-soft);
+  border: 1px solid var(--border);
+  border-radius: var(--r-full);
 }
-/* configurator-option-chip-selected */
+/* 선택: 옅은 빨간 틴트 + 빨간 글자/테두리 + 굵은 글자 */
 .filters button.active {
-  border: 2px solid var(--primary-focus);
-  padding: 0 15px;
+  background: var(--primary-tint);
+  color: var(--brand-text);
+  border-color: var(--brand-text);
+  font-weight: 700;
 }
 
 /* ---------- 목록 ---------- */
@@ -178,9 +252,9 @@ button.primary {
   list-style: none;
   margin: 0;
   padding: 0;
-  background: var(--canvas);
-  border: 1px solid var(--hairline);
-  border-radius: var(--r-lg);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--r-xl);
   overflow: hidden;
 }
 .list:empty { display: none; }
@@ -188,17 +262,17 @@ button.primary {
 .item {
   display: flex;
   align-items: center;
-  gap: var(--sm);
+  gap: var(--s1);
   min-height: 56px;
-  padding: var(--xs) var(--sm) var(--xs) var(--md);
-  border-bottom: 1px solid var(--hairline);
+  padding: var(--s1) var(--s1) var(--s1) var(--s2);
+  border-bottom: 1px solid var(--card-border);
 }
 .item:last-child { border-bottom: 0; }
 
 .item input[type="checkbox"] {
   width: 22px;
   height: 22px;
-  margin: 0;
+  margin: 0 var(--s1) 0 0;
   flex: none;
 }
 
@@ -207,10 +281,11 @@ button.primary {
   height: 10px;
   border-radius: 50%;
   flex: none;
+  margin-right: var(--s1);
 }
-.dot.high { background: var(--high); }
-.dot.medium { background: var(--medium); }
-.dot.low { background: var(--low); }
+.dot.high { background: var(--p-high); }
+.dot.medium { background: var(--p-medium); }
+.dot.low { background: var(--p-low); }
 
 .title {
   flex: 1;
@@ -218,41 +293,42 @@ button.primary {
   overflow-wrap: anywhere;
   cursor: text;
 }
-.item.done .title { text-decoration: line-through; color: var(--ink-muted-48); }
+.item.done .title { text-decoration: line-through; color: var(--text-muted); }
 
 .edit-input { flex: 1; min-width: 0; }
 
-/* caption */
+/* typography.caption */
 .due {
   flex: none;
   font-size: 14px;
-  line-height: 1.43;
-  letter-spacing: -0.224px;
-  color: var(--ink-muted-48);
+  line-height: 1.4;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
 }
-.due.overdue { color: var(--overdue); font-weight: 600; }
+/* 지연: 색 + "지연" 텍스트 + 굵기 (색만으로 구분하지 않음) */
+.due.overdue { color: var(--brand-text); font-weight: 700; }
+.due.overdue::before { content: "지연 "; }
 
-/* button-icon-circular (44 x 44) */
-.icon-btn {
+/* 수정/삭제: 텍스트 라벨 버튼 (button.ghost 계열, 44px 터치 영역) */
+.text-btn {
   flex: none;
-  width: 44px;
+  min-width: 44px;
   height: 44px;
-  padding: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  padding: 0 var(--s1);
   background: transparent;
+  color: var(--text-muted);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
   border: 0;
-  border-radius: 50%;
-  color: var(--ink-muted-48);
-  font-size: 16px;
+  border-radius: var(--r-md);
 }
-.icon-btn:active { background: var(--chip); }
+.text-btn:active { background: var(--surface); color: var(--ink); }
 
 .empty {
   text-align: center;
-  color: var(--ink-muted-48);
-  padding: var(--xl) 0;
+  color: var(--text-muted);
+  padding: var(--s4) 0;
   margin: 0;
 }
 
@@ -261,39 +337,29 @@ button.primary {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: var(--sm);
-  margin-top: var(--lg);
+  gap: var(--s2);
+  margin-top: var(--s3);
   font-size: 14px;
-  line-height: 1.43;
-  letter-spacing: -0.224px;
-  color: var(--ink-muted-80);
+  line-height: 1.4;
+  color: var(--text-soft);
+  font-variant-numeric: tabular-nums;
 }
 
-/* button-secondary-pill */
-#clear-done {
-  height: 44px;
-  padding: 0 22px;
-  background: transparent;
-  color: var(--link);
-  border: 1px solid var(--link);
-  border-radius: var(--r-pill);
-}
-#clear-done:disabled {
-  color: var(--ink-muted-48);
-  border-color: var(--hairline);
+/* ---------- 반응형 (문서 §9) ---------- */
+@media (max-width: 767px) {
+  .app { padding: var(--s3) var(--s2) var(--s4); }
+  .add-form { padding: var(--s2); }
 }
 
-/* ---------- 반응형 ---------- */
-@media (max-width: 640px) {
-  .app { padding: var(--xl) var(--md) var(--xxl); }
-  h1 { font-size: 34px; }
-  .add-form { padding: var(--md); }
-}
-
-@media (max-width: 419px) {
+@media (max-width: 480px) {
   h1 { font-size: 28px; }
+  .logo { width: 88px; }
   .filters { width: 100%; }
-  .filters button { flex: 1; padding: 0 8px; }
-  .filters button.active { padding: 0 7px; }
-  .item { gap: var(--xs); padding-left: var(--sm); }
+  .filters button { flex: 1; padding: 0 var(--s1); }
+  .add-form .btn-primary { flex: 1 1 100%; }
+  .item { gap: 4px; padding: var(--s1) 4px var(--s1) var(--s2); }
+  .item input[type="checkbox"] { margin-right: 4px; }
+  .dot { margin-right: 4px; }
+  .text-btn { min-width: 40px; padding: 0 4px; }
+  .due { font-size: 13px; }
 }

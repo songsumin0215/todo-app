@@ -4,22 +4,34 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light dark">
-  <title>투두</title>
+  <title>SASE 투두</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <main class="app">
-    <h1>오늘의 할 일</h1>
+    <header class="brand">
+      <img class="logo" src="assets/sase-logo.png" width="588" height="299" alt="SASE">
+      <h1>오늘의 할 일</h1>
+    </header>
 
     <form id="add-form" class="add-form" autocomplete="off">
-      <input id="title-input" class="title-input" type="text" placeholder="할 일을 입력하세요" aria-label="할 일 제목">
-      <select id="priority-input" aria-label="우선순위">
-        <option value="high">높음</option>
-        <option value="medium" selected>보통</option>
-        <option value="low">낮음</option>
-      </select>
-      <input id="due-input" type="date" aria-label="마감일">
-      <button type="submit" class="primary">추가</button>
+      <div class="field field-title">
+        <label for="title-input">할 일</label>
+        <input id="title-input" type="text" placeholder="무엇을 해야 하나요?">
+      </div>
+      <div class="field">
+        <label for="priority-input">우선순위</label>
+        <select id="priority-input">
+          <option value="high">높음</option>
+          <option value="medium" selected>보통</option>
+          <option value="low">낮음</option>
+        </select>
+      </div>
+      <div class="field field-due">
+        <label for="due-input">마감일</label>
+        <input id="due-input" type="date">
+      </div>
+      <button type="submit" class="btn-primary">추가</button>
     </form>
 
     <div class="tools">
@@ -36,7 +48,7 @@
 
     <footer class="footer">
       <span id="remaining">남은 할 일 0개</span>
-      <button type="button" id="clear-done">완료 항목 삭제</button>
+      <button type="button" id="clear-done" class="btn-outlined">완료 항목 삭제</button>
     </footer>
   </main>
   <script src="app.js"></script>
