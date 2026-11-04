@@ -12,45 +12,78 @@
     <header class="brand">
       <img class="logo" src="assets/sase-logo.png" width="588" height="299" alt="SASE">
       <h1>오늘의 할 일</h1>
+      <div id="user-bar" class="user-bar" hidden>
+        <span id="user-email" class="user-email"></span>
+        <button type="button" id="logout" class="text-btn">로그아웃</button>
+      </div>
     </header>
 
-    <form id="add-form" class="add-form" autocomplete="off">
-      <div class="field field-title">
-        <label for="title-input">할 일</label>
-        <input id="title-input" type="text" placeholder="무엇을 해야 하나요?">
-      </div>
-      <div class="field">
-        <label for="priority-input">우선순위</label>
-        <select id="priority-input">
-          <option value="high">높음</option>
-          <option value="medium" selected>보통</option>
-          <option value="low">낮음</option>
-        </select>
-      </div>
-      <div class="field field-due">
-        <label for="due-input">마감일</label>
-        <input id="due-input" type="date">
-      </div>
-      <button type="submit" class="btn-primary">추가</button>
-    </form>
+    <p id="status" class="status" role="status" hidden></p>
 
-    <div class="tools">
-      <input id="search-input" type="search" placeholder="검색" aria-label="검색">
-      <div class="filters" role="group" aria-label="필터">
-        <button type="button" data-filter="all" class="active" aria-pressed="true">전체</button>
-        <button type="button" data-filter="active" aria-pressed="false">진행 중</button>
-        <button type="button" data-filter="done" aria-pressed="false">완료</button>
+    <!-- 로그인 -->
+    <section id="auth-view" class="auth-card" hidden>
+      <h2>로그인</h2>
+      <form id="auth-form" novalidate>
+        <div class="field">
+          <label for="auth-email">이메일</label>
+          <input id="auth-email" type="email" autocomplete="email" required>
+        </div>
+        <div class="field">
+          <label for="auth-password">비밀번호 (6자 이상)</label>
+          <input id="auth-password" type="password" autocomplete="current-password" minlength="6" required>
+        </div>
+        <p id="auth-message" class="auth-message" role="alert" hidden></p>
+        <div class="auth-actions">
+          <button type="submit" class="btn-primary" id="login-btn">로그인</button>
+          <button type="button" class="btn-outlined" id="signup-btn">회원가입</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- 할 일 -->
+    <div id="app-view" hidden>
+      <form id="add-form" class="add-form" autocomplete="off">
+        <div class="field field-title">
+          <label for="title-input">할 일</label>
+          <input id="title-input" type="text" maxlength="500" placeholder="무엇을 해야 하나요?">
+        </div>
+        <div class="field">
+          <label for="priority-input">우선순위</label>
+          <select id="priority-input">
+            <option value="high">높음</option>
+            <option value="medium" selected>보통</option>
+            <option value="low">낮음</option>
+          </select>
+        </div>
+        <div class="field field-due">
+          <label for="due-input">마감일</label>
+          <input id="due-input" type="date">
+        </div>
+        <button type="submit" class="btn-primary">추가</button>
+      </form>
+
+      <div class="tools">
+        <input id="search-input" type="search" placeholder="검색" aria-label="검색">
+        <div class="filters" role="group" aria-label="필터">
+          <button type="button" data-filter="all" class="active" aria-pressed="true">전체</button>
+          <button type="button" data-filter="active" aria-pressed="false">진행 중</button>
+          <button type="button" data-filter="done" aria-pressed="false">완료</button>
+        </div>
       </div>
+
+      <ul id="list" class="list"></ul>
+      <p id="empty" class="empty" hidden></p>
+
+      <footer class="footer">
+        <span id="remaining">남은 할 일 0개</span>
+        <button type="button" id="clear-done" class="btn-outlined">완료 항목 삭제</button>
+      </footer>
     </div>
-
-    <ul id="list" class="list"></ul>
-    <p id="empty" class="empty" hidden></p>
-
-    <footer class="footer">
-      <span id="remaining">남은 할 일 0개</span>
-      <button type="button" id="clear-done" class="btn-outlined">완료 항목 삭제</button>
-    </footer>
   </main>
+
+  <!-- supabase-js 2.58.0 (MIT). 외부 CDN 대신 직접 제공: 브라우저 추적 방지로 인한 저장소 차단을 피함 -->
+  <script src="vendor/supabase-js-2.58.0.umd.js"></script>
+  <script src="config.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
