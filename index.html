@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>투두</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app">
+    <h1>오늘의 할 일</h1>
+
+    <form id="add-form" class="add-form" autocomplete="off">
+      <input id="title-input" class="title-input" type="text" placeholder="할 일을 입력하세요" aria-label="할 일 제목">
+      <select id="priority-input" aria-label="우선순위">
+        <option value="high">높음</option>
+        <option value="medium" selected>보통</option>
+        <option value="low">낮음</option>
+      </select>
+      <input id="due-input" type="date" aria-label="마감일">
+      <button type="submit" class="primary">추가</button>
+    </form>
+
+    <div class="tools">
+      <input id="search-input" type="search" placeholder="검색" aria-label="검색">
+      <div class="filters" role="group" aria-label="필터">
+        <button type="button" data-filter="all" class="active" aria-pressed="true">전체</button>
+        <button type="button" data-filter="active" aria-pressed="false">진행 중</button>
+        <button type="button" data-filter="done" aria-pressed="false">완료</button>
+      </div>
+    </div>
+
+    <ul id="list" class="list"></ul>
+    <p id="empty" class="empty" hidden></p>
+
+    <footer class="footer">
+      <span id="remaining">남은 할 일 0개</span>
+      <button type="button" id="clear-done">완료 항목 삭제</button>
+    </footer>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
